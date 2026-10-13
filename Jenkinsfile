@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         PYTHONPATH = '.'
-        SCANNER_HOME = tool 'SonarScanner'
     }
 
     stages {
@@ -35,7 +34,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh '''
-                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        sonar-scanner \
                           -Dsonar.projectKey=aceest-fitness-manager \
                           -Dsonar.projectName="ACEest Fitness Manager" \
                           -Dsonar.sources=. \
