@@ -32,16 +32,15 @@ pipeline {
 
         stage('SonarQube Code Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '''
-                        sonar-scanner \
-                          -Dsonar.projectKey=aceest-fitness-manager \
-                          -Dsonar.projectName="ACEest Fitness Manager" \
-                          -Dsonar.sources=. \
-                          -Dsonar.exclusions=.venv/**,tests/** \
-                          -Dsonar.python.version=3
-                    '''
-                }
+                sh '''
+                    sonar-scanner \
+                      -Dsonar.host.url=http://localhost:9000 \
+                      -Dsonar.projectKey=aceest-fitness-manager \
+                      -Dsonar.projectName="ACEest Fitness Manager" \
+                      -Dsonar.sources=. \
+                      -Dsonar.exclusions=.venv/**,tests/** \
+                      -Dsonar.python.version=3
+                '''
             }
         }
     }
