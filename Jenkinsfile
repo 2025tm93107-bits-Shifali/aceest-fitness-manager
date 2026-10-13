@@ -53,7 +53,7 @@ pipeline {
                 echo 'Deploying application'
                 sh '''
                     mkdir -p /tmp/aceest-fitness-manager
-                    cp -r app.py templates static requirements.txt /tmp/aceest-fitness-manager/
+                    cp -r app.py templates requirements.txt /tmp/aceest-fitness-manager/
                     cd /tmp/aceest-fitness-manager
                     python3 -m venv /tmp/deploy_venv
                     /tmp/deploy_venv/bin/pip install -r requirements.txt
