@@ -15,8 +15,9 @@ pipeline {
         stage('Setup Environment & Dependencies') {
             steps {
                 sh '''
-                    python3 -m pip install --upgrade pip --user
-                    python3 -m pip install -r requirements.txt --user
+                    python3 -m venv /tmp/venv
+                    /tmp/venv/bin/pip install --upgrade pip
+                    /tmp/venv/bin/pip install -r requirements.txt
                 '''
             }
         }
@@ -24,7 +25,7 @@ pipeline {
         stage('Run Unit Tests (Pytest)') {
             steps {
                 sh '''
-                    PYTHONPATH=. python3 -m pytest -v --junitxml=test-reports/results.xml
+                    PYTHONPATH=. /tmp/venv/bin/pytest -v --junitxml=test-reports/results.xml
                 '''
             }
         }
