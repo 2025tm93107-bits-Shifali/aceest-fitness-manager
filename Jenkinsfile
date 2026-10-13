@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         PYTHONPATH = '.'
+        SCANNER_HOME = tool 'SonarScanner'
     }
 
     stages {
@@ -27,6 +28,21 @@ pipeline {
                 sh '''
                     PYTHONPATH=. /tmp/venv/bin/pytest -v --junitxml=test-reports/results.xml
                 '''
+            }
+        }
+
+        stage('SonarQube Code Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh '''
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                          -Dsonar.projectKey=aceest-fitness-manager \
+                          -Dsonar.projectName="ACEest Fitness Manager" \
+                          -Dsonar.sources=. \
+                          -Dsonar.exclusions=.venv/**,tests/** \
+                          -Dsonar.python.version=3
+                    '''
+                }
             }
         }
     }
