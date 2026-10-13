@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ACEest Fitness Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>ACEest Fitness Manager</h1>
+        <p class="subtitle">CI/CD Pipeline Demonstration</p>
+        
+        <form action="/add" method="POST" class="form-group">
+            <input type="text" name="title" placeholder="Enter fitness routine (e.g., Cardio)" required>
+            <button type="submit">Add Routine</button>
+        </form>
+
+        <h2>Workouts & Tasks</h2>
+        <ul>
+            {% for task in tasks %}
+            <li class="{% if task.done %}completed{% endif %}">
+                <span>{{ task.title }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
