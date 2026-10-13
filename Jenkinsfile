@@ -32,22 +32,25 @@ pipeline {
 
         stage('SonarQube Code Analysis') {
             steps {
-                sh '''
-                    if [ ! -d "/tmp/sonar-scanner" ]; then
-                        echo "Downloading SonarScanner CLI..."
-                        curl -sSLo /tmp/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-                        unzip -q /tmp/sonar-scanner.zip -d /tmp/
-                        mv /tmp/sonar-scanner-*-linux /tmp/sonar-scanner
-                    fi
-                    
-                    /tmp/sonar-scanner/bin/sonar-scanner \
-                      -Dsonar.host.url=http://localhost:9000 \
-                      -Dsonar.projectKey=aceest-fitness-manager \
-                      -Dsonar.projectName="ACEest Fitness Manager" \
-                      -Dsonar.sources=. \
-                      -Dsonar.exclusions=.venv/**,tests/** \
-                      -Dsonar.python.version=3
-                '''
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                        if [ ! -d "/tmp/sonar-scanner" ]; then
+                            echo "Downloading SonarScanner CLI..."
+                            curl -sSLo /tmp/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+                            unzip -q /tmp/sonar-scanner.zip -d /tmp/
+                            mv /tmp/sonar-scanner-*-linux /tmp/sonar-scanner
+                        fi
+                        
+                        /tmp/sonar-scanner/bin/sonar-scanner \
+                          -Dsonar.host.url=http://localhost:9000 \
+                          -Dsonar.login=$SONAR_TOKEN \
+                          -Dsonar.projectKey=aceest-fitness-manager \
+                          -Dsonar.projectName="ACEest Fitness Manager" \
+                          -Dsonar.sources=. \
+                          -Dsonar.exclusions=.venv/**,tests/** \
+                          -Dsonar.python.version=3
+                    '''
+                }
             }
         }
     }
