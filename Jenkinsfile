@@ -33,7 +33,7 @@ pipeline {
         stage('SonarQube Code Analysis') {
             steps {
                 sh '''
-                    sonar-scanner \
+                    /opt/sonar-scanner/bin/sonar-scanner \
                       -Dsonar.host.url=http://localhost:9000 \
                       -Dsonar.projectKey=aceest-fitness-manager \
                       -Dsonar.projectName="ACEest Fitness Manager" \
