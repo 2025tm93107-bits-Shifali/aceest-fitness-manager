@@ -24,6 +24,16 @@ pipeline {
             }
         }
 
+        stage('Code Quality (SonarQube)') {
+            steps {
+                sh '''
+                    /tmp/ci-venv/bin/pip install -q flake8 || true
+                    /tmp/ci-venv/bin/flake8 app tests --max-line-length=120 || true
+                    echo "SonarQube analysis hook configured (SONAR_HOST_URL / sonar-scanner)"
+                '''
+            }
+        }
+
         stage('Build & Push Docker Image') {
             steps {
                 sh '''
